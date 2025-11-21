@@ -25,6 +25,16 @@
               "architecture/database-schema",
               "architecture/workflow-engine"
             ]
+          },
+          {
+            "group": "Workflows",
+            "pages": [
+              "workflows/overview",
+              "workflows/dispatcher",
+              "workflows/url-worker",
+              "workflows/scraper-worker",
+              "workflows/aggregator-worker"
+            ]
           }
         ]
       },
@@ -51,7 +61,7 @@
       "anchors": [
         {
           "anchor": "GitHub",
-          "href": "https://github.com/zyris",
+          "href": "https://github.com/BiteWare",
           "icon": "github"
         },
         {
@@ -94,7 +104,7 @@
   "footer": {
     "socials": {
       "x": "https://x.com/zyris",
-      "github": "https://github.com/zyris",
+      "github": "https://github.com/BiteWare",
       "linkedin": "https://linkedin.com/company/zyris"
     }
   }
