@@ -1,0 +1,72 @@
+---
+title: 'List Jobs'
+api: 'GET /api/jobs'
+description: 'Retrieve all enrichment jobs for the authenticated user'
+---
+
+## Request
+
+### Headers
+```
+Authorization: Bearer <supabase-token>
+```
+
+## Response
+
+Returns an array of job objects sorted by creation date (newest first).
+
+<ResponseField name="jobs" type="array">
+  Array of job objects
+  
+  <Expandable title="Job Object">
+    <ResponseField name="id" type="string">
+      Job UUID
+    </ResponseField>
+    
+    <ResponseField name="original_filename" type="string">
+      Name of the uploaded CSV file
+    </ResponseField>
+    
+    <ResponseField name="total_practices" type="number">
+      Total number of practices in the job
+    </ResponseField>
+    
+    <ResponseField name="completed_practices" type="number">
+      Number of practices that have completed processing
+    </ResponseField>
+    
+    <ResponseField name="status" type="string">
+      Job status: `pending`, `processing`, `completed`, or `failed`
+    </ResponseField>
+    
+    <ResponseField name="created_at" type="string">
+      ISO 8601 timestamp
+    </ResponseField>
+    
+    <ResponseField name="updated_at" type="string">
+      ISO 8601 timestamp
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example Response
+```json
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "original_filename": "practices.csv",
+    "total_practices": 94,
+    "completed_practices": 94,
+    "status": "completed",
+    "created_at": "2025-01-15T10:30:00Z",
+    "updated_at": "2025-01-15T10:45:00Z"
+  }
+]
+```
+
+## Example Request
+
+```bash
+curl -X GET http://localhost:3000/api/jobs \
+  -H "Authorization: Bearer YOUR_SUPABASE_TOKEN"
+```

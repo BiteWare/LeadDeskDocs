@@ -1,0 +1,117 @@
+---
+title: 'Get Job Details'
+api: 'GET /api/jobs/{id}'
+description: 'Retrieve detailed information about a specific job including all practices'
+---
+
+## Request
+
+### Headers
+```
+Authorization: Bearer <supabase-token>
+```
+
+### Path Parameters
+<ParamField path="id" type="string" required>
+  Job UUID
+</ParamField>
+
+## Response
+
+<ResponseField name="job" type="object">
+  Job metadata and practices
+  
+  <Expandable title="Job Details">
+    <ResponseField name="id" type="string">
+      Job UUID
+    </ResponseField>
+    
+    <ResponseField name="original_filename" type="string">
+      Name of the uploaded CSV file
+    </ResponseField>
+    
+    <ResponseField name="total_practices" type="number">
+      Total number of practices
+    </ResponseField>
+    
+    <ResponseField name="completed_practices" type="number">
+      Number of completed practices
+    </ResponseField>
+    
+    <ResponseField name="status" type="string">
+      `pending`, `processing`, `completed`, or `failed`
+    </ResponseField>
+    
+    <ResponseField name="practices" type="array">
+      Array of practice objects
+      
+      <Expandable title="Practice Object">
+        <ResponseField name="id" type="number">
+          Practice ID
+        </ResponseField>
+        
+        <ResponseField name="practice_identifier" type="string">
+          Original URL or identifier
+        </ResponseField>
+        
+        <ResponseField name="status" type="string">
+          `pending`, `url_complete`, `scraped`, `aggregated`, or `error`
+        </ResponseField>
+        
+        <ResponseField name="error_message" type="string">
+          Error details if status is `error`
+        </ResponseField>
+        
+        <ResponseField name="url_worker_payload" type="object">
+          Data from URL normalization worker
+        </ResponseField>
+        
+        <ResponseField name="scraper_worker_payload" type="object">
+          Data from scraper worker
+        </ResponseField>
+        
+        <ResponseField name="final_payload" type="object">
+          Aggregated enrichment data
+        </ResponseField>
+      </Expandable>
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example Response
+```json
+{
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "original_filename": "practices.csv",
+  "total_practices": 2,
+  "completed_practices": 2,
+  "status": "completed",
+  "practices": [
+    {
+      "id": 1,
+      "practice_identifier": "https://example-practice.com",
+      "status": "aggregated",
+      "error_message": null,
+      "final_payload": {
+        "practice_name": "Example Practice",
+        "phone": "(555) 123-4567",
+        "address": "123 Main St"
+      }
+    }
+  ]
+}
+```
+
+## Example Request
+
+```bash
+curl -X GET http://localhost:3000/api/jobs/550e8400-e29b-41d4-a716-446655440000 \
+  -H "Authorization: Bearer YOUR_SUPABASE_TOKEN"
+```
+
+## Usage
+
+This endpoint is used for:
+- Frontend polling to track job progress
+- Displaying real-time practice status
+- Monitoring individual practice results

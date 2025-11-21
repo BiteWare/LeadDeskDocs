@@ -1,33 +1,81 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: 'API Introduction'
+description: 'REST API for batch practice enrichment'
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+# LeadDesk 5 API
 
-## Welcome
+## Overview
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+The LeadDesk 5 API provides REST endpoints for managing batch enrichment jobs. Upload a CSV of practice identifiers, track processing progress in real-time, and export enriched data.
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+## Base URL
+
+```
+https://leaddesk.zyris.com/api
+```
+
+For local development:
+```
+http://localhost:3000/api
+```
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+All API endpoints require authentication using a Supabase JWT token.
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+Include the token in the Authorization header:
+
 ```
+Authorization: Bearer YOUR_SUPABASE_TOKEN
+```
+
+## Rate Limits
+
+- API requests are scoped to authenticated users via Row Level Security (RLS)
+- No hard rate limits, but bulk operations should use batch endpoints
+
+## Response Format
+
+All API responses use JSON format (except CSV exports).
+
+### Success Response
+```json
+{
+  "job_id": "550e8400-e29b-41d4-a716-446655440000",
+  "total_practices": 94
+}
+```
+
+### Error Response
+```json
+{
+  "error": "Invalid CSV format",
+  "details": "Missing required columns"
+}
+```
+
+## Workflow
+
+1. **Upload CSV** - POST `/api/jobs` with a CSV file
+2. **Monitor Progress** - Poll GET `/api/jobs/{id}` every 3 seconds
+3. **Export Results** - GET `/api/jobs/{id}/export` when status is `completed`
+
+## Job Statuses
+
+- `pending` - Job created, not yet processing
+- `processing` - Workers are enriching practices
+- `completed` - All practices processed successfully
+- `failed` - One or more practices encountered errors
+
+## Practice Statuses
+
+- `pending` - Awaiting processing
+- `url_complete` - URL normalized and validated
+- `scraped` - Practice data extracted
+- `aggregated` - Final enrichment complete
+- `error` - Processing failed
+
+## Support
+
+For API support, contact: support@zyris.com

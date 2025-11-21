@@ -1,94 +1,233 @@
 ---
-title: 'Development'
-description: 'Preview changes locally to update your docs'
+title: 'Local Development'
+description: 'Set up your development environment for LeadDesk 5'
 ---
 
+## Prerequisites
+
 <Info>
-  **Prerequisites**:
+  Before getting started, ensure you have:
   - Node.js version 19 or higher
-  - A docs repository with a `docs.json` file
+  - Git installed
+  - Access to Supabase project credentials
+  - n8n instance (for workflow testing)
 </Info>
 
-Follow these steps to install and run Mintlify on your operating system.
+## Environment Setup
 
 <Steps>
-<Step title="Install the Mintlify CLI">
+<Step title="Clone the Repository">
+
+```bash
+git clone https://github.com/zyris/leaddesk5.git
+cd leaddesk5
+```
+</Step>
+
+<Step title="Install Dependencies">
+
+```bash
+npm install
+```
+</Step>
+
+<Step title="Configure Environment Variables">
+
+Create a `.env.local` file in the root directory:
+
+```bash
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+
+# n8n
+N8N_DISPATCHER_WEBHOOK=https://your-n8n-instance.com/webhook/dispatcher
+
+# App
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+</Step>
+
+<Step title="Set Up Database">
+
+Run the Supabase migrations:
+
+```bash
+npx supabase db push
+```
+
+This will create:
+- `enrichment_jobs` table
+- `job_practices` table
+- RLS policies
+- Database triggers
+- Indexes
+</Step>
+
+<Step title="Start Development Server">
+
+```bash
+npm run dev
+```
+
+Your app will be available at `http://localhost:3000`
+</Step>
+</Steps>
+
+## Database Management
+
+### Local Supabase
+
+For a fully local development environment:
+
+```bash
+npx supabase start
+```
+
+This starts local Postgres, Studio, and APIs.
+
+### Migrations
+
+Create a new migration:
+
+```bash
+npx supabase migration new migration_name
+```
+
+Apply migrations:
+
+```bash
+npx supabase db push
+```
+
+## Testing Workflows
+
+### n8n Setup
+
+1. Deploy the dispatcher workflow
+2. Deploy worker workflows (URL, Scraper, Aggregator)
+3. Update webhook URLs in `.env.local`
+
+### Testing Jobs
+
+```bash
+# Upload test CSV
+curl -X POST http://localhost:3000/api/jobs \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -F "file=@test-practices.csv"
+```
+
+## Development Tools
+
+### Supabase Studio
+
+Access at `http://localhost:54323` (if using local Supabase) to:
+- View table data
+- Test RLS policies
+- Monitor real-time changes
+- Execute SQL queries
+
+### API Testing
+
+Use the provided Postman collection or test with curl:
+
+```bash
+# List jobs
+curl http://localhost:3000/api/jobs \
+  -H "Authorization: Bearer YOUR_TOKEN"
+
+# Get job details
+curl http://localhost:3000/api/jobs/{job_id} \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+## Code Formatting
+
+We use ESLint and Prettier for code formatting:
+
+```bash
+npm run lint
+npm run format
+```
+
+### VSCode Extensions
+
+Recommended extensions:
+- [MDX](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx) - MDX syntax highlighting
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) - Code formatting
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) - Linting
+
+## Documentation Development
+
+To preview these docs locally:
+
+<Steps>
+<Step title="Install Mintlify CLI">
 
 ```bash
 npm i -g mint
 ```
 </Step>
 
-<Step title="Preview locally">
+<Step title="Navigate to Docs Directory">
 
-Navigate to your docs directory where your `docs.json` file is located, and run the following command:
+```bash
+cd LeadDeskDocs
+```
+</Step>
+
+<Step title="Start Preview Server">
 
 ```bash
 mint dev
 ```
 
-A local preview of your documentation will be available at `http://localhost:3000`.
-
+Documentation will be available at `http://localhost:3000`
 </Step>
 </Steps>
-
-## Custom ports
-
-By default, Mintlify uses port 3000. You can customize the port Mintlify runs on by using the `--port` flag. For example, to run Mintlify on port 3333, use this command:
-
-```bash
-mint dev --port 3333
-```
-
-If you attempt to run Mintlify on a port that's already in use, it will use the next available port:
-
-```md
-Port 3000 is already in use. Trying 3001 instead.
-```
-
-## Mintlify versions
-
-Please note that each CLI release is associated with a specific version of Mintlify. If your local preview does not align with the production version, please update the CLI:
-
-```bash
-npm mint update
-```
-
-## Validating links
-
-The CLI can assist with validating links in your documentation. To identify any broken links, use the following command:
-
-```bash
-mint broken-links
-```
-
-## Deployment
-
-If the deployment is successful, you should see the following:
-
-<Frame>
-  <img src="/images/checks-passed.png" alt="Screenshot of a deployment confirmation message that says All checks have passed." style={{ borderRadius: '0.5rem' }} />
-</Frame>
-
-## Code formatting
-
-We suggest using extensions on your IDE to recognize and format MDX. If you're a VSCode user, consider the [MDX VSCode extension](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx) for syntax highlighting, and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) for code formatting.
 
 ## Troubleshooting
 
 <AccordionGroup>
-  <Accordion title='Error: Could not load the "sharp" module using the darwin-arm64 runtime'>
-
-    This may be due to an outdated version of node. Try the following:
-    1. Remove the currently-installed version of the CLI: `npm remove -g mint`
-    2. Upgrade to Node v19 or higher.
-    3. Reinstall the CLI: `npm i -g mint`
+  <Accordion title="Database Connection Errors">
+    Verify your Supabase credentials in `.env.local` and ensure the project is active.
   </Accordion>
 
-  <Accordion title="Issue: Encountering an unknown error">
-  
-    Solution: Go to the root of your device and delete the `~/.mintlify` folder. Then run `mint dev` again.
+  <Accordion title="n8n Webhook Not Triggering">
+    Check that:
+    - n8n workflows are active
+    - Webhook URLs are correct
+    - n8n instance is accessible from your dev environment
+  </Accordion>
+
+  <Accordion title="Authentication Issues">
+    Ensure you're using a valid Supabase JWT token and RLS policies are properly configured.
+  </Accordion>
+
+  <Accordion title="Port Already in Use">
+    Change the dev port: `npm run dev -- -p 3001`
   </Accordion>
 </AccordionGroup>
 
-Curious about what changed in the latest CLI version? Check out the [CLI changelog](https://www.npmjs.com/package/mintlify?activeTab=versions).
+## Next Steps
+
+<CardGroup cols={2}>
+
+<Card title="Frontend Architecture" icon="browser" href="/architecture/frontend-architecture">
+  Understand the Next.js structure
+</Card>
+
+<Card title="Backend Architecture" icon="server" href="/architecture/backend-architecture">
+  Explore API route implementation
+</Card>
+
+<Card title="Database Schema" icon="database" href="/architecture/database-schema">
+  Learn the data model
+</Card>
+
+<Card title="API Reference" icon="code" href="/api-reference/introduction">
+  Test API endpoints
+</Card>
+
+</CardGroup>

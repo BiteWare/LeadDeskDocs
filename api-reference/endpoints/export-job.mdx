@@ -1,0 +1,54 @@
+---
+title: 'Export Job Results'
+api: 'GET /api/jobs/{id}/export'
+description: 'Download enriched data as a CSV file'
+---
+
+## Request
+
+### Headers
+```
+Authorization: Bearer <supabase-token>
+```
+
+### Path Parameters
+<ParamField path="id" type="string" required>
+  Job UUID
+</ParamField>
+
+## Response
+
+Returns a CSV file with the following columns:
+- `practice_identifier` - Original URL or identifier
+- `status` - Final processing status
+- `error_message` - Error details (if any)
+- `created_at` - Practice creation timestamp
+- `updated_at` - Last update timestamp
+- Plus all fields from the `final_payload` (flattened)
+
+### CSV Format
+```csv
+practice_identifier,status,error_message,practice_name,phone,address
+https://example1.com,aggregated,,Example Practice 1,(555) 123-4567,123 Main St
+https://example2.com,aggregated,,Example Practice 2,(555) 987-6543,456 Oak Ave
+https://example3.com,error,Failed to scrape,,,
+```
+
+## Example Request
+
+```bash
+curl -X GET http://localhost:3000/api/jobs/550e8400-e29b-41d4-a716-446655440000/export \
+  -H "Authorization: Bearer YOUR_SUPABASE_TOKEN" \
+  -o enriched_practices.csv
+```
+
+## Usage
+
+This endpoint is used to:
+- Download completed job results
+- Export enriched practice data for analysis
+- Integrate results into other systems
+
+<Note>
+  The export button is only enabled in the UI when the job status is `completed`.
+</Note>

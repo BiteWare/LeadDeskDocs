@@ -1,97 +1,103 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "LeadDesk 5"
+description: "Batch practice enrichment platform with automated workflows"
 ---
 
-## Setting up
+## Welcome to LeadDesk 5
 
-Get your documentation site up and running in minutes.
+LeadDesk 5 is a modern batch processing system for enriching practice data at scale. Upload CSV files, track progress in real-time, and export enriched results.
 
 <Card
-  title="Start here"
+  title="Get Started"
   icon="rocket"
   href="/quickstart"
   horizontal
 >
-  Follow our three step quickstart guide.
+  Learn how to upload your first batch and monitor progress.
 </Card>
 
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
+## Core Features
 
 <Columns cols={2}>
   <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
+    title="Batch Processing"
+    icon="layer-group"
+    href="/architecture/frontend-architecture"
   >
-    Edit your docs locally and preview them in real time.
+    Upload CSV files with practice identifiers and process hundreds of records in parallel.
   </Card>
   <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
+    title="Real-time Tracking"
+    icon="chart-line"
+    href="/architecture/frontend-architecture"
   >
-    Customize the design and colors of your site to match your brand.
-  </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+    Monitor job progress with live updates and practice-level status tracking.
   </Card>
   <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
+    title="Automated Workflows"
+    icon="diagram-project"
+    href="/architecture/workflow-engine"
   >
-    Auto-generate API documentation from OpenAPI specifications.
+    n8n-powered workers handle URL normalization, scraping, and data aggregation.
+  </Card>
+  <Card
+    title="CSV Export"
+    icon="download"
+    href="/api-reference/endpoints/export-job"
+  >
+    Download enriched results as CSV with all aggregated practice data.
   </Card>
 </Columns>
 
-## Create beautiful pages
-
-Everything you need to create world-class documentation.
+## Architecture
 
 <Columns cols={2}>
   <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
+    title="Frontend"
+    icon="browser"
+    href="/architecture/frontend-architecture"
   >
-    Use MDX to style your docs pages.
+    Next.js App Router with Shadcn UI and real-time polling.
   </Card>
   <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
+    title="Backend"
+    icon="server"
+    href="/architecture/backend-architecture"
   >
-    Add sample code to demonstrate how to use your product.
+    REST API built on Next.js API routes with Supabase.
   </Card>
   <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
+    title="Database"
+    icon="database"
+    href="/architecture/database-schema"
   >
-    Display images and other media.
+    Postgres with Row Level Security, triggers, and JSONB storage.
   </Card>
   <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
+    title="Workflows"
+    icon="gears"
+    href="/architecture/workflow-engine"
   >
-    Write once and reuse across your docs.
+    n8n dispatcher and worker workflows for async processing.
   </Card>
 </Columns>
 
-## Need inspiration?
+## API Reference
 
 <Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
+  title="REST API"
+  icon="code"
+  href="/api-reference/introduction"
 >
-  Browse our showcase of exceptional documentation sites.
+  Explore the LeadDesk 5 API endpoints for job management and data export.
+</Card>
+
+## Local Development
+
+<Card
+  title="Development Setup"
+  icon="laptop-code"
+  href="/development"
+>
+  Set up your local environment and start contributing.
 </Card>
