@@ -1,0 +1,90 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "palm",
+  "name": "LeadDesk 5 Documentation",
+  "colors": {
+    "primary": "#FF3F8C",
+    "light": "#FF6BA8",
+    "dark": "#E6246F"
+  },
+  "favicon": "/Zyris Logo.png",
+  "navigation": {
+    "anchors": [
+      {
+        "anchor": "Documentation",
+        "icon": "book-open",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "index",
+              "quickstart",
+              "development"
+            ]
+          },
+          {
+            "group": "Architecture",
+            "pages": [
+              "architecture/frontend-architecture",
+              "architecture/backend-architecture",
+              "architecture/database-schema",
+              "architecture/workflow-engine",
+              "architecture/data-extraction",
+              "architecture/export-formats"
+            ]
+          },
+          {
+            "group": "Workflows",
+            "pages": [
+              "workflows/overview",
+              "workflows/dispatcher",
+              "workflows/url-worker",
+              "workflows/scraper-worker",
+              "workflows/aggregator-worker"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          },
+          {
+            "group": "Endpoints",
+            "pages": [
+              "api-reference/endpoints/create-job",
+              "api-reference/endpoints/list-jobs",
+              "api-reference/endpoints/get-job",
+              "api-reference/endpoints/export-job",
+              "api-reference/endpoints/export-excel",
+              "api-reference/endpoints/export-json",
+              "api-reference/endpoints/search-practices",
+              "api-reference/endpoints/submit-leaddesk"
+            ]
+          }
+        ]
+      },
+      {
+        "anchor": "GitHub",
+        "href": "https://github.com/BiteWare",
+        "icon": "github"
+      },
+      {
+        "anchor": "Support",
+        "href": "mailto:support@zyris.com",
+        "icon": "envelope"
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/zyris",
+      "github": "https://github.com/BiteWare",
+      "linkedin": "https://linkedin.com/company/zyris"
+    }
+  }
+}
