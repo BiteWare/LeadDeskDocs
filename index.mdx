@@ -1,0 +1,105 @@
+---
+title: "LeadDesk 5"
+description: "Production enrichment pipeline for dental practice data"
+---
+
+## Welcome to LeadDesk 5
+
+LeadDesk 5 (LD5) is the production enrichment pipeline for dental practice data. It replaces all legacy LD3/LD4 systems with a practice-level tracking architecture.
+
+Upload CSV files, track progress in real-time, and export enriched results.
+
+<Card
+  title="Get Started"
+  icon="rocket"
+  href="/quickstart"
+  horizontal
+>
+  Learn how to upload your first batch and monitor progress.
+</Card>
+
+## Core Features
+
+<Columns cols={2}>
+  <Card
+    title="Batch Processing"
+    icon="layer-group"
+    href="/architecture/frontend-architecture"
+  >
+    Upload CSV files with practice identifiers and process hundreds of records in parallel.
+  </Card>
+  <Card
+    title="Real-time Tracking"
+    icon="chart-line"
+    href="/architecture/frontend-architecture"
+  >
+    Monitor job progress with live updates and practice-level status tracking.
+  </Card>
+  <Card
+    title="Automated Workflows"
+    icon="diagram-project"
+    href="/architecture/workflow-engine"
+  >
+    n8n-powered workers handle URL normalization, scraping, and data aggregation.
+  </Card>
+  <Card
+    title="Multi-Format Export"
+    icon="download"
+    href="/architecture/export-formats"
+  >
+    Download enriched results as CSV, Excel, or JSON with all aggregated practice data.
+  </Card>
+</Columns>
+
+## Architecture
+
+<Columns cols={2}>
+  <Card
+    title="Frontend"
+    icon="browser"
+    href="/architecture/frontend-architecture"
+  >
+    Next.js App Router with Shadcn UI and real-time polling.
+  </Card>
+  <Card
+    title="Backend"
+    icon="server"
+    href="/architecture/backend-architecture"
+  >
+    REST API built on Next.js API routes with Supabase.
+  </Card>
+  <Card
+    title="Database"
+    icon="database"
+    href="/architecture/database-schema"
+  >
+    Postgres with Row Level Security, triggers, and JSONB storage.
+  </Card>
+  <Card
+    title="Workflows"
+    icon="gears"
+    href="/architecture/workflow-engine"
+  >
+    n8n dispatcher and worker workflows for async processing.
+  </Card>
+</Columns>
+
+## API Reference
+
+<Card
+  title="REST API"
+  icon="code"
+  href="/api-reference/introduction"
+>
+  Explore the LeadDesk 5 API endpoints for job management and data export.
+</Card>
+
+## Local Development
+
+<Card
+  title="Development Setup"
+  icon="laptop-code"
+  href="/development"
+>
+  Set up your local environment and start contributing.
+</Card>

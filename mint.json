@@ -1,0 +1,117 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "LeadDesk 5 Documentation",
+  "colors": {
+    "primary": "#FF3F8C",
+    "light": "#FF6BA8",
+    "dark": "#E6246F"
+  },
+  "favicon": "/Zyris Logo.png",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": ["index", "quickstart", "development"]
+          },
+          {
+            "group": "Architecture",
+            "pages": [
+              "architecture/frontend-architecture",
+              "architecture/backend-architecture",
+              "architecture/database-schema",
+              "architecture/workflow-engine",
+              "architecture/data-extraction",
+              "architecture/export-formats"
+            ]
+          },
+          {
+            "group": "Workflows",
+            "pages": [
+              "workflows/overview",
+              "workflows/dispatcher",
+              "workflows/url-worker",
+              "workflows/scraper-worker",
+              "workflows/aggregator-worker"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "API Documentation",
+            "pages": ["api-reference/introduction"]
+          },
+          {
+            "group": "Endpoints",
+            "pages": [
+              "api-reference/endpoints/create-job",
+              "api-reference/endpoints/list-jobs",
+              "api-reference/endpoints/get-job",
+              "api-reference/endpoints/export-job",
+              "api-reference/endpoints/export-excel",
+              "api-reference/endpoints/export-json",
+              "api-reference/endpoints/search-practices",
+              "api-reference/endpoints/submit-leaddesk"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "GitHub",
+          "href": "https://github.com/BiteWare",
+          "icon": "github"
+        },
+        {
+          "anchor": "Support",
+          "href": "mailto:support@zyris.com",
+          "icon": "envelope"
+        }
+      ]
+    }
+  },
+  "logo": {
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:support@zyris.com"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://leaddesk.zyris.com"
+    }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/zyris",
+      "github": "https://github.com/BiteWare",
+      "linkedin": "https://linkedin.com/company/zyris"
+    }
+  }
+}

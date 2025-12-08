@@ -1,0 +1,416 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "LeadDesk 5 API",
+    "description": "REST API for batch practice enrichment with automated workflows",
+    "license": {
+      "name": "MIT"
+    },
+    "version": "5.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://leaddesk.zyris.com/api",
+      "description": "Production server"
+    },
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Local development server"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/jobs": {
+      "get": {
+        "summary": "List all jobs",
+        "description": "Returns all enrichment jobs for the authenticated user",
+        "responses": {
+          "200": {
+            "description": "Array of jobs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Job"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new job",
+        "description": "Upload a CSV file to create a new batch enrichment job",
+        "requestBody": {
+          "description": "CSV file containing practice identifiers",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "CSV file with practice identifiers"
+                  }
+                },
+                "required": ["file"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Job created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobCreated"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid CSV format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobs/{id}": {
+      "get": {
+        "summary": "Get job details",
+        "description": "Returns detailed information about a specific job including all practices",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Job UUID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Job details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobDetail"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Job not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jobs/{id}/export": {
+      "get": {
+        "summary": "Export job results",
+        "description": "Download enriched data as a CSV file",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Job UUID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CSV file with enriched data",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Job not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/kill-job": {
+      "post": {
+        "summary": "Kill a running job",
+        "description": "Cancels a running job and sets its status to error",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "job_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Job UUID to cancel"
+                  }
+                },
+                "required": ["job_id"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Job cancelled successfully"
+          }
+        }
+      }
+    },
+    "/redo-job": {
+      "post": {
+        "summary": "Redo failed practices",
+        "description": "Resets error practices to pending and re-triggers the dispatcher",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "job_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Job UUID to retry"
+                  }
+                },
+                "required": ["job_id"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Job retry initiated"
+          }
+        }
+      }
+    },
+    "/check-job-status": {
+      "get": {
+        "summary": "Check job status",
+        "description": "Returns practice counts by status for a job",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "query",
+            "description": "Job UUID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Job status counts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobStatusCounts"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Job": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Job UUID"
+          },
+          "original_filename": {
+            "type": "string",
+            "description": "Uploaded CSV filename"
+          },
+          "total_practices": {
+            "type": "integer",
+            "description": "Total number of practices"
+          },
+          "completed_practices": {
+            "type": "integer",
+            "description": "Number of completed practices"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "running", "completed", "error"],
+            "description": "Job status"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "JobCreated": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Created job UUID"
+          },
+          "total_practices": {
+            "type": "integer",
+            "description": "Number of practices in the uploaded CSV"
+          }
+        }
+      },
+      "JobDetail": {
+        "allOf": [
+          { "$ref": "#/components/schemas/Job" },
+          {
+            "type": "object",
+            "properties": {
+              "practices": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Practice"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Practice": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Practice ID"
+          },
+          "practice_identifier": {
+            "type": "string",
+            "description": "Original URL or identifier"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "url_complete", "scraped", "aggregated", "error"],
+            "description": "Practice status"
+          },
+          "error_message": {
+            "type": "string",
+            "nullable": true,
+            "description": "Error details if status is error"
+          },
+          "url_worker_payload": {
+            "type": "object",
+            "description": "Data from URL normalization worker"
+          },
+          "scraper_worker_payload": {
+            "type": "object",
+            "description": "Data from scraper worker"
+          },
+          "final_payload": {
+            "type": "object",
+            "description": "Aggregated enrichment data"
+          }
+        }
+      },
+      "JobStatusCounts": {
+        "type": "object",
+        "properties": {
+          "pending": {
+            "type": "integer"
+          },
+          "url_complete": {
+            "type": "integer"
+          },
+          "scraped": {
+            "type": "integer"
+          },
+          "aggregated": {
+            "type": "integer"
+          },
+          "error": {
+            "type": "integer"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error message"
+          },
+          "details": {
+            "type": "string",
+            "description": "Additional error details"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Supabase JWT token"
+      }
+    }
+  }
+}
